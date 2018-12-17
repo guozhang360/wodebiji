@@ -1,0 +1,16 @@
+2014年11月1日22:57:13
+1.拖动无边框窗体 ，使用user32.dll
+首先添加命名空间using System.Runtime.InteropServices;
+
+然后再添加下面代码：
+[DllImport("user32.dll")]//*********************拖动无窗体的控件
+ public static extern bool ReleaseCapture();
+ [DllImport("user32.dll")]
+ public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+ public const int WM_SYSCOMMAND = 0x0112;
+ public const int SC_MOVE = 0xF010;
+ public const int HTCAPTION = 0x0002;
+
+最后在窗体的MouseDown事件中添加代码：
+ReleaseCapture();
+ SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
